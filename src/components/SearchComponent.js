@@ -15,13 +15,14 @@ class SearchComponent extends React.Component{
         event.preventDefault();
         console.log(this.state.searchText);
         alert('Thank you for visiting our website, we are creating something great stuff on '+ this.state.searchText);
+        //this.props.history.push('./browse')
     };
 
     render(){
         return(
             <Form inline className="col-md-8" onSubmit={this.handleSubmit}>
                         {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
-                        <InputGroup>
+                <InputGroup className="col-md-9">
                     <InputGroup.Prepend>
                         <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
                     </InputGroup.Prepend>
@@ -30,10 +31,10 @@ class SearchComponent extends React.Component{
                         aria-label="Search"
                         aria-describedby="searchText"
                         value={this.state.searchText}
-                        onChange={event => this.setState({ searchText : event.target.value })}
+                        onChange={event => this.setState({ searchText: event.target.value })}
                         className="mr-sm-2"
                     />
-                    </InputGroup>
+                </InputGroup>
                     <Button variant="outline-success" type="submit">Search</Button>
             </Form>
         );

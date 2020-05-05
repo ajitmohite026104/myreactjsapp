@@ -1,28 +1,24 @@
 //Github Usernames : gaearon, sophiebits, sebmarkbage, bvaughn
 
 import React, { Suspense, lazy } from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-//import axios from 'axios';
-//import LoginComponent from './components/loginComponent';
 import NavigationBar from './components/NavigationBar';
-import Profile from './components/profile';
-//import ReactDOM from "react-dom";
-// const testData = [
-//   { name: "Dan Abramov", avatar_url: "https://avatars0.githubusercontent.com/u/810438?v=4", company: "@facebook" },
-//   { name: "Sophie Alpert", avatar_url: "https://avatars2.githubusercontent.com/u/6820?v=4", company: "Humu" },
-//   { name: "Sebastian Markbåge", avatar_url: "https://avatars2.githubusercontent.com/u/63648?v=4", company: "Facebook" },
-// ];
 
 const Home = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
 const LoginComponent = lazy(() => import('./components/loginComponent'));
 const GithubUsers = lazy(() => import('./components/GithubUsers'));
-
+const BrowseCourses = lazy(() => import('./components/BrowseCourses'));
+const History = lazy(() => import('./components/History'));
+const Profile = lazy(() => import('./components/profile'));
 
 
 class App extends React.Component {
   state = {
-    isLoggedIn: false
+    isLoggedIn: true,
   }
 
   render() {
@@ -30,7 +26,28 @@ class App extends React.Component {
       <div>
         <Router>
           <NavigationBar isLoggedIn={this.state.isLoggedIn}></NavigationBar>
-          <div className="container-fluid">
+          <Container fluid="md" style={{backgroundColor:'azure'}}>
+            <Row>
+              <Col>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/about" component={About} />
+                    <Route path="/login" component={LoginComponent} />
+                    <Route path="/githubusers" component={GithubUsers} />
+                    <Route path="/profile" component={Profile} />
+                    <Route path="/browse" component={BrowseCourses} />
+                    <Route path="/history" component={History} />
+                  </Switch>
+                </Suspense>
+              </Col>
+            </Row>
+            <Row></Row>
+          </Container>
+          <div className="fixed-bottom">
+            Footer content
+          </div>
+          {/* <div className="container-fluid">
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Home} />
@@ -38,9 +55,11 @@ class App extends React.Component {
                 <Route path="/login" component={LoginComponent} />
                 <Route path="/githubusers" component={GithubUsers} />
                 <Route path="/profile" component={Profile} />
+                <Route path="/browse" component={BrowseCourses} />
+                <Route path="/history" component={History} />
               </Switch>
             </Suspense>
-          </div>
+          </div> */}
         </Router>
       </div>
     );
