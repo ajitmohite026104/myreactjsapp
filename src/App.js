@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
+import Footer from './components/Footer';
 
 const Home = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
@@ -44,13 +45,7 @@ class App extends React.Component {
             </Row>
             <Row></Row>
           </Container>
-          <div className="fixed-bottom footer">
-            <footer className="page-footer font-small blue">
-              <div className="footer-copyright text-center py-3">© 2020 Copyright:&nbsp;
-                <a target="_blank" href="https://persistent.com/">Persistent.com</a>
-              </div>
-            </footer>
-          </div>
+          <Footer></Footer>
           {/* <div className="container-fluid">
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
