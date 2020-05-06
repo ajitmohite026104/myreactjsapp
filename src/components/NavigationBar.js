@@ -61,7 +61,7 @@ class NavigationBar extends React.Component {
                         placement="bottom"
                         overlay={
                             <Tooltip>
-                                <strong>Notifications</strong>.
+                                <strong>Notifications</strong>
                             </Tooltip>
                         }>
                         {/* <Button variant="secondary">Tooltip on {placement}</Button> */}
