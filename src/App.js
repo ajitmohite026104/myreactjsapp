@@ -4,9 +4,15 @@ import React, { Suspense, lazy } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
+import requireAuth from "./services/authService";
 
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));
@@ -23,12 +29,22 @@ class App extends React.Component {
     isLoggedIn: true,
   };
 
+  componentDidMount() {
+    if (!sessionStorage.getItem("auth_cookie")) {
+      this.setState({ isLoggedIn: false });
+    }
+  }
+
   render() {
     return (
-      <div>
+      <div className="main">
         <Router>
           <NavigationBar isLoggedIn={this.state.isLoggedIn}></NavigationBar>
-          <Container fluid="md" style={{ backgroundColor: "azure" }}>
+          <Container
+            className="container-wrap"
+            fluid="md"
+            style={{ backgroundColor: "azure" }}
+          >
             <Row>
               <Col>
                 <Suspense fallback={<div>Loading...</div>}>
@@ -38,10 +54,11 @@ class App extends React.Component {
                     <Route path="/login" component={LoginComponent} />
                     <Route path="/oauth_callback" component={LoginCallback} />
                     <Route path="/githubusers" component={GithubUsers} />
-                    <Route path="/profile" component={Profile} />
+                    <Route path="/profile" component={requireAuth(Profile)} />
                     <Route path="/browse" component={BrowseCourses} />
                     <Route path="/history" component={History} />
-                    <Route path="/video/:id" component={Video} />
+                    <Route path="/video/:id" component={requireAuth(Video)} />
+                    {!this.state.isLoggedIn && <Redirect push to="/login" />}
                   </Switch>
                 </Suspense>
               </Col>

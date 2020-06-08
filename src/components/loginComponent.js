@@ -12,6 +12,7 @@ class LoginComponent extends React.Component {
   state = {
     userName: "",
     password: "",
+    returnUrl: "",
   };
 
   handleSubmit = (event) => {
@@ -31,8 +32,6 @@ class LoginComponent extends React.Component {
       Image: res.imageUrl,
       ProviderId: "Google",
     };
-    console.log("Response: ", response);
-    console.log("Profile Object: ", googleresponse);
     sessionStorage.setItem("auth_cookie", response.wc.id_token);
     sessionStorage.setItem("access_token", response.accessToken);
     sessionStorage.setItem("userData", JSON.stringify(googleresponse));

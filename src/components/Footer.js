@@ -3,9 +3,9 @@ import React from "react";
 class Footer extends React.Component {
   render() {
     return (
-      <div className="fixed-bottom footer">
+      <div className="footer">
         <footer className="page-footer font-small blue">
-          <div className="footer-copyright text-center py-3">
+          <div className="footer-copyright text-center">
             © 2020 Copyright:&nbsp;
             <a
               target="_blank"

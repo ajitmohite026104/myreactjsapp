@@ -1,16 +1,35 @@
 import React from "react";
 
 export class LoginCallback extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 5,
+    };
+    this.timer = this.timer.bind(this);
+    this.redirect = this.redirect.bind(this);
+  }
+
+  componentDidMount() {
+    let intervalId = setInterval(this.timer, 1000);
+    this.setState({ intervalId: intervalId });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
+  timer() {
+    this.setState({ count: this.state.count - 1 });
+    if (this.state.count === 0) {
+      this.redirect();
+    }
+  }
+
   redirect() {
     let returnUrl = sessionStorage.getItem("returnUrl");
     returnUrl = returnUrl ? returnUrl : "/";
-    console.log("ReturnUrl: ", returnUrl);
-    setTimeout(
-      function () {
-        this.props.history.push(returnUrl);
-      }.bind(this),
-      5000
-    );
+    this.props.history.push(returnUrl);
   }
 
   render() {
@@ -19,11 +38,9 @@ export class LoginCallback extends React.Component {
 
     // Code to save these values in firebase goes here
 
-    this.redirect();
-
     return (
       <div>
-        <h1>Redirecting back to home page...</h1>
+        <h1>Please wait. Redirecting in {this.state.count}s ...</h1>
         <h3>LoggedIn User Details: </h3>
         <br />
         <p>

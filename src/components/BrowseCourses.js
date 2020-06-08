@@ -74,13 +74,6 @@ class BrowseCourses extends React.Component {
     return (
       <div>
         <h2>Available Courses</h2>
-        <button
-          type="button"
-          onClick={() => this.navigateToCourse("python")}
-          className="btn btn-default"
-        >
-          View
-        </button>
         <ListComponent
           listItems={courseList}
           header={tableHeader}
