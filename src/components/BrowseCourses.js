@@ -1,5 +1,6 @@
 import React from "react";
 import ListComponent from "./ListComponent";
+import AppUtils from "../utilities/AppUtils";
 
 const courses = [
   {
@@ -37,13 +38,13 @@ const courses = [
   },
 ];
 
-const tableHeader = (
-  <tr>
-    <th>Course ID</th>
-    <th>Course Title</th>
-    <th>Description</th>
-  </tr>
-);
+// const tableHeader = (
+//   <tr>
+//     <th>Course ID</th>
+//     <th>Course Title</th>
+//     <th>Description</th>
+//   </tr>
+// );
 
 class BrowseCourses extends React.Component {
   constructor(props) {
@@ -55,28 +56,69 @@ class BrowseCourses extends React.Component {
     this.props.history.push("/video/" + courseId);
   }
 
+  getCourses() {
+    let { search } = this.props.location;
+    const result = AppUtils.getQueryParamValue("filterBy", search);
+    if (result && result !== "") {
+      return courses.filter(
+        (c) =>
+          c.courseName.toLowerCase().includes(result.toLowerCase()) ||
+          c.courseDescription.toLowerCase().includes(result.toLowerCase())
+      );
+    }
+    return courses;
+  }
+
   render() {
-    const courseList = courses.map((course) => (
-      <tr
-        key={course.courseId}
-        onClick={() => this.navigateToCourse(course.courseId)}
-        className="courseLink"
-      >
-        <td>{course.courseId}</td>
-        <td>
-          <img src={course.courseLogo} alt="logo" height={100} width={200} />{" "}
-          <span style={{ textAlign: "center" }}>{course.courseName}</span>{" "}
-        </td>
-        <td>{course.courseDescription}</td>
-        <td></td>
-      </tr>
-    ));
+    // const courseList = this.getCourses().map((course) => (
+    //   <tr
+    //     key={course.courseId}
+    //     onClick={() => this.navigateToCourse(course.courseId)}
+    //     className="courseLink"
+    //   >
+    //     <td>{course.courseId}</td>
+    //     <td>
+    //       <img src={course.courseLogo} alt="logo" height={100} width={200} />{" "}
+    //       <span style={{ textAlign: "center" }}>{course.courseName}</span>{" "}
+    //     </td>
+    //     <td>{course.courseDescription}</td>
+    //     <td></td>
+    //   </tr>
+    // ));
+    const cardList = this.getCourses().map((course) => {
+      return (
+        <div className="col-md-4">
+          <div className="card course-card" height="75">
+            <img
+              src={course.courseLogo}
+              className="card-img-top"
+              height="200"
+              alt="..."
+            />
+            <div className="card-body">
+              <h5 className="card-title">{course.courseName}</h5>
+              <p className="card-text">
+                {AppUtils.getShortText(course.courseDescription)}
+              </p>
+              <button
+                onClick={() => this.navigateToCourse(course.courseId)}
+                className="btn btn-outline-success"
+              >
+                Visit Course
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    });
+
     return (
       <div>
         <h2>Available Courses</h2>
         <ListComponent
-          listItems={courseList}
-          header={tableHeader}
+          //listItems={courseList}
+          //header={tableHeader}
+          cardList={cardList}
         ></ListComponent>
       </div>
     );

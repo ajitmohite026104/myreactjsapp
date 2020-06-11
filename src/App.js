@@ -13,6 +13,8 @@ import {
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import requireAuth from "./services/authService";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));
@@ -23,6 +25,15 @@ const History = lazy(() => import("./components/History"));
 const Profile = lazy(() => import("./components/profile"));
 const Video = lazy(() => import("./components/Video"));
 const LoginCallback = lazy(() => import("./components/LoginCallback"));
+
+const userData = {
+  Name: "",
+  Email: "",
+  Image: "",
+  IsLoggedIn: false,
+};
+const reducer = (state = userData, action) => state;
+const store = createStore(reducer);
 
 class App extends React.Component {
   state = {
@@ -38,35 +49,36 @@ class App extends React.Component {
   render() {
     return (
       <div className="main">
-        <Router>
-          <NavigationBar isLoggedIn={this.state.isLoggedIn}></NavigationBar>
-          <Container
-            className="container-wrap"
-            fluid="md"
-            style={{ backgroundColor: "azure" }}
-          >
-            <Row>
-              <Col>
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/about" component={About} />
-                    <Route path="/login" component={LoginComponent} />
-                    <Route path="/oauth_callback" component={LoginCallback} />
-                    <Route path="/githubusers" component={GithubUsers} />
-                    <Route path="/profile" component={requireAuth(Profile)} />
-                    <Route path="/browse" component={BrowseCourses} />
-                    <Route path="/history" component={History} />
-                    <Route path="/video/:id" component={requireAuth(Video)} />
-                    {!this.state.isLoggedIn && <Redirect push to="/login" />}
-                  </Switch>
-                </Suspense>
-              </Col>
-            </Row>
-            <Row></Row>
-          </Container>
-          <Footer></Footer>
-          {/* <div className="container-fluid">
+        <Provider store={store}>
+          <Router>
+            <NavigationBar isLoggedIn={this.state.isLoggedIn}></NavigationBar>
+            <Container
+              className="container-wrap"
+              fluid="md"
+              style={{ backgroundColor: "azure" }}
+            >
+              <Row>
+                <Col>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Switch>
+                      <Route exact path="/" component={Home} />
+                      <Route path="/about" component={About} />
+                      <Route path="/login" component={LoginComponent} />
+                      <Route path="/oauth_callback" component={LoginCallback} />
+                      <Route path="/githubusers" component={GithubUsers} />
+                      <Route path="/profile" component={requireAuth(Profile)} />
+                      <Route path="/browse" component={BrowseCourses} />
+                      <Route path="/history" component={requireAuth(History)} />
+                      <Route path="/video/:id" component={requireAuth(Video)} />
+                      {!this.state.isLoggedIn && <Redirect push to="/login" />}
+                    </Switch>
+                  </Suspense>
+                </Col>
+              </Row>
+              <Row></Row>
+            </Container>
+            <Footer></Footer>
+            {/* <div className="container-fluid">
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Home} />
@@ -79,7 +91,8 @@ class App extends React.Component {
               </Switch>
             </Suspense>
           </div> */}
-        </Router>
+          </Router>
+        </Provider>
       </div>
     );
   }

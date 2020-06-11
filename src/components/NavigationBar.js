@@ -17,7 +17,9 @@ import Tooltip from "react-bootstrap/Tooltip";
 
 class NavigationBar extends React.Component {
   state = {
-    isLoggedIn: this.props.isLoggedIn,
+    isLoggedIn:
+      sessionStorage.getItem("auth_cookie") &&
+      sessionStorage.getItem("auth_cookie") !== "",
   };
 
   logout(event) {

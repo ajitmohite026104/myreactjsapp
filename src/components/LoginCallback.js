@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 export class LoginCallback extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export class LoginCallback extends React.Component {
 
   render() {
     let authCookie = sessionStorage.getItem("auth_cookie");
-    let userData = JSON.parse(sessionStorage.getItem("userData"));
+    let userData = this.props.userData;
 
     // Code to save these values in firebase goes here
 
@@ -57,4 +58,10 @@ export class LoginCallback extends React.Component {
   }
 }
 
-export default LoginCallback;
+function mapStateToProps(state) {
+  return {
+    userData: state,
+  };
+}
+
+export default connect(mapStateToProps)(LoginCallback);

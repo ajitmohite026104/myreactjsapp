@@ -15,3 +15,13 @@ code {
 .courseLink:hover {
   cursor: pointer;
 }
+
+.course-card {
+  margin: 0.75rem;
+  padding: 0.25rem;
+}
+
+.course-card:hover {
+  box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 253);
+  cursor: pointer;
+}

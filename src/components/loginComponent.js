@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
 import GoogleLogin from "react-google-login";
+import { connect } from "react-redux";
+import { Google } from "../config";
 
 class LoginComponent extends React.Component {
   state = {
@@ -25,16 +27,18 @@ class LoginComponent extends React.Component {
 
   handleGoogleLogin = (response) => {
     let res = response.profileObj;
-    let googleresponse = {
-      Name: res.name,
-      Email: res.email,
-      Token: res.googleId,
-      Image: res.imageUrl,
-      ProviderId: "Google",
-    };
+    if (res) {
+      this.props.userData.Name = res.name;
+      this.props.userData.Email = res.email;
+      this.props.userData.Image = res.imageUrl;
+      this.props.userData.IsLoggedIn = true;
+    }
+
     sessionStorage.setItem("auth_cookie", response.wc.id_token);
     sessionStorage.setItem("access_token", response.accessToken);
-    sessionStorage.setItem("userData", JSON.stringify(googleresponse));
+    sessionStorage.setItem("user_info", JSON.stringify(res));
+
+    //window.location.reload();
     this.props.history.push("/oauth_callback");
   };
 
@@ -48,7 +52,7 @@ class LoginComponent extends React.Component {
         <InputGroup className="mb-3">
           <GoogleLogin
             style={{ marginBottom: 5 }}
-            clientId="390535230854-njqngd3qlrs1qq1m1br5jk8j1iillabl.apps.googleusercontent.com"
+            clientId={Google.CLIENT_ID}
             buttonText="Login with Google"
             onSuccess={this.handleGoogleLogin}
             onFailure={this.handleGoogleLogin}
@@ -95,4 +99,10 @@ class LoginComponent extends React.Component {
   }
 }
 
-export default LoginComponent;
+function mapStateToProps(state) {
+  return {
+    userData: state,
+  };
+}
+
+export default connect(mapStateToProps)(LoginComponent);

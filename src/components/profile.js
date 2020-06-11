@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 class Profile extends React.Component {
   state = {
@@ -9,12 +10,13 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
-    let userData = JSON.parse(sessionStorage.getItem("userData"));
+    let userData = JSON.parse(sessionStorage.getItem("user_info"));
+    console.log(userData);
     if (userData) {
       this.setState({
-        userName: userData.Name,
-        profilePicture: userData.Image,
-        email: userData.Email,
+        userName: userData.name,
+        profilePicture: userData.imageUrl,
+        email: userData.email,
       });
     }
   }
@@ -39,4 +41,10 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+function mapStateToProps(state) {
+  return {
+    userData: state,
+  };
+}
+
+export default connect(mapStateToProps)(Profile);
