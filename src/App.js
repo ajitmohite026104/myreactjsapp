@@ -19,12 +19,13 @@ import { Provider } from "react-redux";
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));
 const LoginComponent = lazy(() => import("./components/loginComponent"));
-const GithubUsers = lazy(() => import("./components/GithubUsers"));
+// const GithubUsers = lazy(() => import("./components/GithubUsers"));
 const BrowseCourses = lazy(() => import("./components/BrowseCourses"));
-const History = lazy(() => import("./components/History"));
-const Profile = lazy(() => import("./components/profile"));
+//const History = lazy(() => import("./components/History"));
+const Profile = lazy(() => import("./components/Profile"));
 const Video = lazy(() => import("./components/Video"));
 const LoginCallback = lazy(() => import("./components/LoginCallback"));
+const VideoDashboard = lazy(() => import("./components/VideoDashboard"));
 
 const userData = {
   Name: "",
@@ -37,21 +38,23 @@ const store = createStore(reducer);
 
 class App extends React.Component {
   state = {
-    isLoggedIn: true,
+    isLoggedIn: false,
   };
 
   componentDidMount() {
-    if (!sessionStorage.getItem("auth_cookie")) {
-      this.setState({ isLoggedIn: false });
+    if (sessionStorage.getItem("auth_cookie")) {
+      this.setState({ isLoggedIn: true });
     }
   }
 
   render() {
+    const { isLoggedIn } = this.state;
     return (
       <div className="main">
         <Provider store={store}>
-          <Router>
-            <NavigationBar isLoggedIn={this.state.isLoggedIn}></NavigationBar>
+          <Router {...{ isLoggedIn }}>
+            <NavigationBar></NavigationBar>
+
             <Container
               className="container-wrap"
               fluid="md"
@@ -65,19 +68,21 @@ class App extends React.Component {
                       <Route path="/about" component={About} />
                       <Route path="/login" component={LoginComponent} />
                       <Route path="/oauth_callback" component={LoginCallback} />
-                      <Route path="/githubusers" component={GithubUsers} />
+                      {/* <Route path="/githubusers" component={GithubUsers} /> */}
                       <Route path="/profile" component={requireAuth(Profile)} />
                       <Route path="/browse" component={BrowseCourses} />
-                      <Route path="/history" component={requireAuth(History)} />
+                      {/* <Route path="/history" component={requireAuth(History)} /> */}
                       <Route path="/video/:id" component={requireAuth(Video)} />
+                      <Route path="/course/create" component={VideoDashboard} />
                       {!this.state.isLoggedIn && <Redirect push to="/login" />}
                     </Switch>
                   </Suspense>
                 </Col>
               </Row>
-              <Row></Row>
+
+              <Row />
             </Container>
-            <Footer></Footer>
+            <Footer />
             {/* <div className="container-fluid">
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>

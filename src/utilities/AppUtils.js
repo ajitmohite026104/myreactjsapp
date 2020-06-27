@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const AppUtils = {
   getQueryParamValue(name, url) {
     if (!url) url = window.location.href;
@@ -12,6 +14,13 @@ const AppUtils = {
 
   getShortText(text) {
     return text.length > 100 ? text.substring(0, 97) + "..." : text;
+  },
+
+  checkImageExists(imgURL) {
+    return axios
+      .head(imgURL)
+      .then((res) => res.status !== 404)
+      .catch((err) => false);
   },
 };
 

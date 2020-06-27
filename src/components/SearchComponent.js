@@ -14,15 +14,12 @@ class SearchComponent extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    //console.log(this.state.searchText);
-    //alert('Thank you for visiting our website, we are creating something great stuff on '+ this.state.searchText);
     this.props.history.push(`/browse?filterBy=${this.state.searchText}`);
   };
 
   render() {
     return (
       <Form inline className="col-md-8" onSubmit={this.handleSubmit}>
-        {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
         <InputGroup className="col-md-9">
           <InputGroup.Prepend>
             <InputGroup.Text id="basic-addon1">

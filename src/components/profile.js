@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import AppUtils from "../utilities/AppUtils";
 
 class Profile extends React.Component {
   state = {
@@ -9,13 +10,15 @@ class Profile extends React.Component {
     email: "",
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     let userData = JSON.parse(sessionStorage.getItem("user_info"));
-    console.log(userData);
+
     if (userData) {
+      let picExists = await AppUtils.checkImageExists(userData.imageUrl);
+      let picUrl = picExists ? userData.imageUrl : this.state.profilePicture;
       this.setState({
         userName: userData.name,
-        profilePicture: userData.imageUrl,
+        profilePicture: picUrl,
         email: userData.email,
       });
     }

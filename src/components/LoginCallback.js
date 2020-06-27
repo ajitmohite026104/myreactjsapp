@@ -40,7 +40,7 @@ export class LoginCallback extends React.Component {
     // Code to save these values in firebase goes here
 
     return (
-      <div>
+      <div className="container">
         <h1>Please wait. Redirecting in {this.state.count}s ...</h1>
         <h3>LoggedIn User Details: </h3>
         <br />
