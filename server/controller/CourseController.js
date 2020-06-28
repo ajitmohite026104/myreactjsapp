@@ -1,5 +1,8 @@
 const Course = require("../models/course");
 const { response } = require("express");
+const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 
 getCourseList = async (req, res) => {
   await Course.find({}, (err, courses) => {
@@ -107,7 +110,7 @@ updateCourse = async (req, res) => {
 };
 
 deleteCourse = async (req, res) => {
-  await Course.findOneAndDelete({ _id: req.params.id }, (err, course) => {
+  await Course.findOneAndDelete({ _id: req.params.id }, async (err, course) => {
     if (err) {
       return res.status(400).json({ success: false, error: err });
     }
@@ -117,6 +120,8 @@ deleteCourse = async (req, res) => {
         .status(404)
         .json({ success: false, error: `Course not found` });
     }
+
+    await unlinkAsync("../server/uploads/" + req.params.id + ".mp4");
 
     return res.status(200).json({ success: true, data: course });
   }).catch((err) => console.log(err));

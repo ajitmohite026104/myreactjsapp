@@ -14,13 +14,15 @@ authenticateUser = async (req, res) => {
         .json({ success: false, error: `User credentials invalid` });
     }
     if (user.password && user.password === password) {
+      const tokenString = user.email + "$" + user.password;
+      const buff = new Buffer.alloc(64, tokenString, "base64");
       const data = {
         _id: user._id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
         imageUrl: user.imageUrl ? user.imageUrl : "",
-        token: "create bearer token with 15 mins expiry time",
+        token: buff.toString(),
       };
       return res.status(200).json({ success: true, data: data });
     }

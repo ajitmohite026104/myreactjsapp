@@ -13,7 +13,11 @@ const AppUtils = {
   },
 
   getShortText(text) {
-    return text.length > 100 ? text.substring(0, 97) + "..." : text;
+    if (text.length > 100) return text.substring(0, 97) + "...";
+    else {
+      text = text + " " + "\xa0".repeat(100 - text.length);
+      return text;
+    }
   },
 
   checkImageExists(imgURL) {

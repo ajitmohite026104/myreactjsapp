@@ -10,6 +10,9 @@ import GoogleLogin from "react-google-login";
 import { connect } from "react-redux";
 import { Google } from "../config";
 import LoginService from "../services/loginService";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { UserConsumer } from "../userContext";
 
 class LoginComponent extends React.Component {
   constructor(props) {
@@ -21,7 +24,7 @@ class LoginComponent extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
-    this.handleGoogleLoginFailure = this.handleGoogleLoginFailure.bind(this);
+    this.handleGoogleLoginFailure = this.handleAuthFailure.bind(this);
   }
 
   async handleSubmit(event) {
@@ -41,7 +44,7 @@ class LoginComponent extends React.Component {
       sessionStorage.setItem("user_info", JSON.stringify(result.data));
       this.props.history.push("/oauth_callback");
     } else {
-      alert("Authentication Unsuccessful");
+      this.handleAuthFailure(result);
     }
   }
 
@@ -73,64 +76,97 @@ class LoginComponent extends React.Component {
     }
   }
 
-  handleGoogleLoginFailure(err) {
-    alert(`Authentication Unsuccessful`);
-    console.log(err);
+  handleAuthFailure(err) {
+    confirmAlert({
+      title: "Authentication Failed",
+      message: err.error,
+      buttons: [
+        {
+          label: "Ok",
+          onClick: () => {},
+        },
+      ],
+      closeOnEscape: true,
+      closeOnClickOutside: true,
+    });
   }
 
   render() {
     return (
-      <Form
-        style={{ paddingTop: 20 }}
-        className="col-md-4 float-right"
-        onSubmit={this.handleSubmit}
-      >
-        <InputGroup className="mb-3">
-          <GoogleLogin
-            style={{ marginBottom: 5 }}
-            clientId={Google.CLIENT_ID}
-            buttonText="Login with Google"
-            onSuccess={this.handleGoogleLogin}
-            onFailure={this.handleGoogleLoginFailure}
-          ></GoogleLogin>
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1">
-              <FontAwesomeIcon icon={faUser} />
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            placeholder="Username"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            value={this.state.userName}
-            onChange={(event) =>
-              this.setState({ userName: event.target.value })
-            }
-            required={true}
-          />
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1">
-              <FontAwesomeIcon icon={faKey} />
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            placeholder="Password"
-            aria-label="Password"
-            aria-describedby="basic-addon1"
-            type="password"
-            value={this.state.password}
-            onChange={(event) =>
-              this.setState({ password: event.target.value })
-            }
-            required={true}
-          />
-        </InputGroup>
-        <BootstrapButton type="submit">Log In</BootstrapButton>
-      </Form>
+      <UserConsumer>
+        {(value) => {
+          return (
+            <div className="d-flex justify-content-center">
+              <img
+                src="https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg"
+                alt=""
+                className="identity"
+              />
+              <Form
+                style={{ paddingTop: 20 }}
+                className="col-md-4"
+                onSubmit={(e) => {
+                  this.handleSubmit(e).then((res) => {
+                    value.setLogin(true);
+                  });
+                }}
+              >
+                <InputGroup className="mb-3">
+                  <GoogleLogin
+                    clientId={Google.CLIENT_ID}
+                    buttonText="Login with Google"
+                    onSuccess={(e) => {
+                      this.handleGoogleLogin(e).then((res) => {
+                        value.setLogin(true);
+                      });
+                    }}
+                    onFailure={this.handleAuthFailure}
+                  ></GoogleLogin>
+                </InputGroup>
+                <h6 className="d-flex justify-content-center">Or</h6>
+                <InputGroup className="mb-3">
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id="basic-addon1">
+                      <FontAwesomeIcon icon={faUser} />
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormControl
+                    placeholder="Username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={this.state.userName}
+                    onChange={(event) =>
+                      this.setState({ userName: event.target.value })
+                    }
+                    required={true}
+                  />
+                </InputGroup>
+                <InputGroup className="mb-3">
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id="basic-addon1">
+                      <FontAwesomeIcon icon={faKey} />
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormControl
+                    placeholder="Password"
+                    aria-label="Password"
+                    aria-describedby="basic-addon1"
+                    type="password"
+                    value={this.state.password}
+                    onChange={(event) =>
+                      this.setState({ password: event.target.value })
+                    }
+                    required={true}
+                  />
+                </InputGroup>
+                <BootstrapButton variant="secondary" type="submit">
+                  Log In
+                </BootstrapButton>
+              </Form>
+            </div>
+          );
+        }}
+      </UserConsumer>
     );
   }
 }

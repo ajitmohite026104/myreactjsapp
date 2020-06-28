@@ -9,6 +9,8 @@ class Video extends React.Component {
     super(props);
     this.state = {
       video: {
+        title: "",
+        desc: "",
         src: "",
         poster:
           "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg",
@@ -30,6 +32,8 @@ class Video extends React.Component {
         video: {
           src: `${Server.BASE_URL}/${videoDetails.videosrc}`,
           poster: posterURL,
+          title: videoDetails.title,
+          desc: videoDetails.description,
         },
       });
     }
@@ -43,22 +47,20 @@ class Video extends React.Component {
           controls={true}
           src={this.state.video.src}
           poster={this.state.video.poster}
-          width="720"
+          width="1020"
           height="420"
           autoplay={false}
         />
       );
     }
     return (
-      <>
-        {/* <ReactPlayer
-          controls
-          width="720"
-          height="650px"
-          url="http://localhost:3100/CR101.mp4"
-        /> */}
+      <div className="course-desc">
+        <div className="d-flex justify-content-left">
+          <h2>{this.state.video.title}</h2>
+        </div>
         {player}
-      </>
+        <p>{this.state.video.desc}</p>
+      </div>
     );
   }
 }

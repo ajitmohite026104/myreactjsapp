@@ -12,7 +12,7 @@ class Footer extends React.Component {
               rel="noopener noreferrer"
               href="https://persistent.com/"
             >
-              Persistent.com
+              @Persistent.com
             </a>
           </div>
         </footer>

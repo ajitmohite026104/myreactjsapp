@@ -1,19 +1,21 @@
 import React, { createRef } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import SearchComponent from "./SearchComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-// import { faCog } from "@fortawesome/free-solid-svg-icons";
-//import { faHistory } from "@fortawesome/free-solid-svg-icons";
+import { faSignOutAlt, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { faBookReader } from "@fortawesome/free-solid-svg-icons";
-//import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Image from "react-bootstrap/Image";
+import { UserConsumer } from "../userContext";
+//import { faBell } from "@fortawesome/free-solid-svg-icons";
+//import { faCog } from "@fortawesome/free-solid-svg-icons";
+//import { faHistory } from "@fortawesome/free-solid-svg-icons";
 //import LoginService from "../services/loginService";
 //import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 //import Tooltip from "react-bootstrap/Tooltip";
@@ -57,68 +59,103 @@ class NavigationBar extends React.Component {
   wrapper = createRef();
 
   render() {
-    const { isLoggedIn, isAdmin } = this.state;
-    let button;
-
-    if (isLoggedIn) {
-      button = (
-        <Navbar.Collapse id="basic-navbar-nav" className="float-right">
-          <Nav className="mr-auto">
-            <NavDropdown
-              title={<FontAwesomeIcon icon={faUser} />}
-              id="basic-nav-dropdown"
-            >
-              {/* <NavDropdown.Item href="/profile"><Link to="/profile"><FontAwesomeIcon icon={faUser} /> Profile</Link></NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2"><FontAwesomeIcon icon={faHistory} /> History</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3"><FontAwesomeIcon icon={faCog} /> Account Settings</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4"><FontAwesomeIcon icon={faSignOutAlt} /> Logout</NavDropdown.Item> */}
-              <Nav.Link as={NavLink} to="/profile" exact>
-                <FontAwesomeIcon icon={faUser} /> Profile
-              </Nav.Link>
-              {/* <Nav.Link as={NavLink} to="/history">
-                <FontAwesomeIcon icon={faHistory} /> History
-              </Nav.Link>
-              <Nav.Link as={NavLink} to="/settings">
-                <FontAwesomeIcon icon={faCog} /> Account Settings
-              </Nav.Link> */}
-              <NavDropdown.Divider />
-              <Nav.Link as={NavLink} onClick={this.logout} to="/login">
-                <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-              </Nav.Link>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      );
-    } else {
-      button = (
-        <Navbar.Brand>
-          <Link to="/Login"> Login </Link>{" "}
-        </Navbar.Brand>
-      );
-    }
     return (
-      <Navbar bg="light" expand="lg" ref={this.wrapper}>
+      <Navbar bg="light" sticky="top" expand="lg" ref={this.wrapper}>
         <Navbar.Brand>
-          <Link to="/">
-            {" "}
-            <FontAwesomeIcon icon={faHome} /> Ingenuity
-          </Link>
+          <Nav.Link href="/">
+            <Image
+              src="https://www.persistent.com/wp-content/uploads/2020/06/persistentsys-header-logo.png"
+              width="100"
+              height="40"
+              className="d-inline-block align-top"
+              alt="See Beyond, Rise Above"
+            />
+          </Nav.Link>
         </Navbar.Brand>
-        <Navbar.Brand>
-          <Link to="/browse">
-            {" "}
-            <FontAwesomeIcon icon={faBookReader} /> Browse
-          </Link>
-        </Navbar.Brand>
-        {isAdmin && (
-          <Navbar.Brand>
-            <Link to="/course/create">
-              {" "}
-              <FontAwesomeIcon icon={faPlusSquare} /> Course
-            </Link>
-          </Navbar.Brand>
-        )}
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Navbar.Brand>
+              <Nav.Link href="/">
+                {" "}
+                <FontAwesomeIcon icon={faHome} /> Home
+              </Nav.Link>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <Nav.Link href="/browse">
+                {" "}
+                <FontAwesomeIcon icon={faBookReader} /> Browse
+              </Nav.Link>
+            </Navbar.Brand>
+            <UserConsumer>
+              {(value) => {
+                if (value.isLoggedIn && value.isAdmin) {
+                  return (
+                    <Navbar.Brand>
+                      <Nav.Link href="/course/create">
+                        {" "}
+                        <FontAwesomeIcon icon={faPlusSquare} /> Course
+                      </Nav.Link>
+                    </Navbar.Brand>
+                  );
+                }
+              }}
+            </UserConsumer>
+            {/* {isAdmin && (
+              <Navbar.Brand>
+                <Nav.Link href="/course/create">
+                  {" "}
+                  <FontAwesomeIcon icon={faPlusSquare} /> Course
+                </Nav.Link>
+              </Navbar.Brand>
+            )} */}
+          </Nav>
+          <SearchComponent />
+          <UserConsumer>
+            {(value) => {
+              if (value.isLoggedIn) {
+                return (
+                  <Nav>
+                    <NavDropdown
+                      title={<FontAwesomeIcon icon={faUser} />}
+                      id="basic-nav-dropdown"
+                    >
+                      <Navbar.Brand>
+                        <Nav.Link as={NavLink} to="/profile">
+                          <FontAwesomeIcon icon={faUser} /> Profile
+                        </Nav.Link>
+                      </Navbar.Brand>
+                      <NavDropdown.Divider />
+                      <Navbar.Brand>
+                        <Nav.Link
+                          as={NavLink}
+                          onClick={(e) => {
+                            this.logout(e);
+                            value.setLogin(false);
+                          }}
+                          to="/login"
+                        >
+                          <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+                        </Nav.Link>
+                      </Navbar.Brand>
+                    </NavDropdown>
+                  </Nav>
+                );
+              } else {
+                return (
+                  <Nav className="ml-auto">
+                    <Navbar.Brand>
+                      <Nav.Link href="/Login">
+                        {" "}
+                        <FontAwesomeIcon icon={faSignInAlt} /> Login{" "}
+                      </Nav.Link>{" "}
+                    </Navbar.Brand>
+                  </Nav>
+                );
+              }
+            }}
+          </UserConsumer>
+        </Navbar.Collapse>
 
         {/* <Navbar.Brand><Link to="/About"> About </Link></Navbar.Brand>
                 <Navbar.Brand><Link to="/GithubUsers"> Users </Link> </Navbar.Brand> */}
@@ -126,9 +163,9 @@ class NavigationBar extends React.Component {
                         <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                         <Button variant="outline-success">Search</Button>
                 </Form> */}
-        <SearchComponent></SearchComponent>
-        <Navbar.Brand>
-          {/* <OverlayTrigger
+
+        {/* <Navbar.Brand>
+          <OverlayTrigger
             key="bottom"
             placement="bottom"
             overlay={
@@ -138,9 +175,8 @@ class NavigationBar extends React.Component {
             }
           >
             <FontAwesomeIcon icon={faBell} />
-          </OverlayTrigger> */}
-        </Navbar.Brand>
-        {button}
+          </OverlayTrigger>
+        </Navbar.Brand> */}
       </Navbar>
     );
   }
@@ -153,3 +189,47 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(NavigationBar);
+
+// let button;
+
+//     if (isLoggedIn) {
+//       button = (
+//         <Nav className="">
+//           <NavDropdown
+//             title={<FontAwesomeIcon icon={faUser} />}
+//             id="basic-nav-dropdown"
+//             className=""
+//           >
+//             <Navbar.Brand>
+//               <Nav.Link as={NavLink} to="/profile">
+//                 <FontAwesomeIcon icon={faUser} /> Profile
+//               </Nav.Link>
+//             </Navbar.Brand>
+//             <NavDropdown.Divider />
+//             <Navbar.Brand>
+//               <Nav.Link as={NavLink} onClick={this.logout} to="/login">
+//                 <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+//               </Nav.Link>
+//             </Navbar.Brand>
+
+//             {/* <Link as={NavLink} to="/history">
+//                 <FontAwesomeIcon icon={faHistory} /> History
+//               </Link>
+//               <Link as={NavLink} to="/settings">
+//                 <FontAwesomeIcon icon={faCog} /> Account Settings
+//               </Link> */}
+//           </NavDropdown>
+//         </Nav>
+//       );
+//     } else {
+//       button = (
+//         <Nav className="ml-auto">
+//           <Navbar.Brand>
+//             <Nav.Link href="/Login">
+//               {" "}
+//               <FontAwesomeIcon icon={faSignInAlt} /> Login{" "}
+//             </Nav.Link>{" "}
+//           </Navbar.Brand>
+//         </Nav>
+//       );
+//     }

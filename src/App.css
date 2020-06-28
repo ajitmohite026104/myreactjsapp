@@ -1,17 +1,67 @@
 .main {
   position: relative;
   min-height: 100vh;
+  background-color: rgb(245, 245, 235);
 }
 
 .container-wrap {
   padding-bottom: 3rem;
 }
 
+.something {
+  right: 0;
+  left: auto !important;
+}
+
+img.identity {
+  max-width: 275px;
+  max-height: 275px;
+}
+
+.create-form input {
+  color: darkslategray;
+  border-radius: 1rem;
+  padding-left: 1.5rem;
+}
+
+.create-form textarea {
+  border-radius: 1rem;
+  color: darkslategray;
+  height: 10rem !important;
+}
+
+.course-desc {
+  color: darkslategrey;
+  padding: 0.5rem 0.75rem 1rem 0.75rem;
+}
+
+.course-desc h2 {
+  text-transform: capitalize;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.course-desc p {
+  padding-top: 1rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-weight: lighter;
+  font-size: medium;
+  text-align: justify;
+}
+
 .footer {
-  background-color: #e9ecef;
+  background-color: rgb(17, 17, 48);
+  color: rgb(206, 75, 28);
   position: absolute;
   padding-top: 0.5rem;
   bottom: 0;
   width: 100%;
   height: 3rem;
+}
+
+.footer a {
+  color: white;
+}
+
+.footer a:hover {
+  color: rgb(206, 75, 28);
 }

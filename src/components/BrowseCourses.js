@@ -2,6 +2,134 @@ import React from "react";
 import ListComponent from "./ListComponent";
 import AppUtils from "../utilities/AppUtils";
 import CourseService from "../services/courseService";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+
+class BrowseCourses extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      courses: [],
+      isAdmin: false,
+    };
+
+    this.getCourseThumbnail = this.getCourseThumbnail.bind(this);
+    this.confirmDeleteCourse = this.confirmDeleteCourse.bind(this);
+  }
+
+  async componentDidMount() {
+    let userData = JSON.parse(sessionStorage.getItem("user_info"));
+    let serviceObj = new CourseService();
+    let courseList = await serviceObj.getAllCourses();
+    if (courseList && courseList.length > 0) {
+      this.setState({
+        courses: courseList,
+        isAdmin: userData ? userData.isAdmin : false,
+      });
+    }
+  }
+
+  filterCourses(courses) {
+    let { search } = this.props.location;
+    const result = AppUtils.getQueryParamValue("filterBy", search);
+    if (result && result !== "") {
+      return courses.filter(
+        (c) =>
+          c.title.toLowerCase().includes(result.toLowerCase()) ||
+          c.description.toLowerCase().includes(result.toLowerCase())
+      );
+    }
+    return courses;
+  }
+
+  removeCourse(course) {
+    let serviceObj = new CourseService();
+    serviceObj
+      .deleteCourse(course._id)
+      .then((res) => {
+        let courseList = this.state.courses.filter((c) => c._id !== res._id);
+        this.setState({
+          courses: courseList,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  confirmDeleteCourse(course) {
+    confirmAlert({
+      title: course.title,
+      message: "Are you sure you want to delete this course ?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            this.removeCourse(course);
+          },
+        },
+        {
+          label: "Cancel",
+          onClick: () => {},
+        },
+      ],
+      closeOnEscape: false,
+      closeOnClickOutside: false,
+    });
+  }
+
+  getCourseThumbnail(imgURL) {
+    return imgURL && imgURL !== ""
+      ? imgURL
+      : "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg";
+  }
+
+  render() {
+    const cardList = this.filterCourses(this.state.courses).map((course) => {
+      return (
+        <div className="col-md-4" key={course._id}>
+          <div className="card course-card" height="75">
+            <img
+              src={this.getCourseThumbnail(course.thumbnail)}
+              className="card-img-top"
+              height="200"
+              alt="..."
+            />
+            <div className="card-body">
+              <h5 className="card-title">{course.title}</h5>
+              <p className="card-text">
+                {AppUtils.getShortText(course.description)}
+              </p>
+              <button
+                onClick={() => this.props.history.push("/video/" + course._id)}
+                className="btn btn-outline-secondary"
+              >
+                Visit Course
+              </button>
+              &nbsp;
+              {this.state.isAdmin && (
+                <button
+                  onClick={() => this.confirmDeleteCourse(course)}
+                  className="btn btn-outline-danger"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    });
+
+    return (
+      <div>
+        <h2>Courses Available</h2>
+        <ListComponent cardList={cardList}></ListComponent>
+      </div>
+    );
+  }
+}
+
+export default BrowseCourses;
 
 // const courses = [
 //   {
@@ -47,132 +175,18 @@ import CourseService from "../services/courseService";
 //   </tr>
 // );
 
-class BrowseCourses extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      courses: [],
-      isAdmin: false,
-    };
-    this.navigateToCourse = this.navigateToCourse.bind(this);
-    this.getCourseThumbnail = this.getCourseThumbnail.bind(this);
-  }
-
-  async componentDidMount() {
-    let userData = JSON.parse(sessionStorage.getItem("user_info"));
-    let serviceObj = new CourseService();
-    let courseList = await serviceObj.getAllCourses();
-    if (courseList && courseList.length > 0) {
-      this.setState({
-        courses: courseList,
-        isAdmin: userData ? userData.isAdmin : false,
-      });
-    }
-  }
-
-  navigateToCourse(courseId) {
-    this.props.history.push("/video/" + courseId);
-  }
-
-  getCourses(courses) {
-    let { search } = this.props.location;
-    const result = AppUtils.getQueryParamValue("filterBy", search);
-    if (result && result !== "") {
-      return courses.filter(
-        (c) =>
-          c.title.toLowerCase().includes(result.toLowerCase()) ||
-          c.description.toLowerCase().includes(result.toLowerCase())
-      );
-    }
-    return courses;
-  }
-
-  async removeCourse(course) {
-    // let result = confirm(
-    //   `Are you sure you want to delete course - ${course.title} ?`
-    // );
-    let serviceObj = new CourseService();
-    const result = await serviceObj.deleteCourse(course._id);
-    if (result) {
-      let courseList = this.state.courses.filter((c) => c._id !== result._id);
-      this.setState({
-        courses: courseList,
-      });
-    }
-  }
-
-  getCourseThumbnail(imgURL) {
-    return imgURL && imgURL !== ""
-      ? imgURL
-      : "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg";
-    // if (imgURL && imgURL !== "") {
-    //   await AppUtils.checkImageExists(imgURL).then((res) => {
-    //     if (res) return imgURL;
-    //     return "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg";
-    //   });
-    // }
-    // return "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg";
-  }
-
-  render() {
-    // const courseList = this.getCourses().map((course) => (
-    //   <tr
-    //     key={course.courseId}
-    //     onClick={() => this.navigateToCourse(course.courseId)}
-    //     className="courseLink"
-    //   >
-    //     <td>{course.courseId}</td>
-    //     <td>
-    //       <img src={course.courseLogo} alt="logo" height={100} width={200} />{" "}
-    //       <span style={{ textAlign: "center" }}>{course.courseName}</span>{" "}
-    //     </td>
-    //     <td>{course.courseDescription}</td>
-    //     <td></td>
-    //   </tr>
-    // ));
-    const cardList = this.getCourses(this.state.courses).map((course) => {
-      return (
-        <div className="col-md-4" key={course._id}>
-          <div className="card course-card" height="75">
-            <img
-              src={this.getCourseThumbnail(course.thumbnail)}
-              className="card-img-top"
-              height="200"
-              alt="..."
-            />
-            <div className="card-body">
-              <h5 className="card-title">{course.title}</h5>
-              <p className="card-text">
-                {AppUtils.getShortText(course.description)}
-              </p>
-              <button
-                onClick={() => this.navigateToCourse(course._id)}
-                className="btn btn-outline-success"
-              >
-                Visit Course
-              </button>
-              &nbsp;
-              {this.state.isAdmin && (
-                <button
-                  onClick={() => this.removeCourse(course)}
-                  className="btn btn-outline-danger"
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    });
-
-    return (
-      <div>
-        <h2>Available Courses</h2>
-        <ListComponent cardList={cardList}></ListComponent>
-      </div>
-    );
-  }
-}
-
-export default BrowseCourses;
+// const courseList = this.getCourses().map((course) => (
+//   <tr
+//     key={course.courseId}
+//     onClick={() => this.navigateToCourse(course.courseId)}
+//     className="courseLink"
+//   >
+//     <td>{course.courseId}</td>
+//     <td>
+//       <img src={course.courseLogo} alt="logo" height={100} width={200} />{" "}
+//       <span style={{ textAlign: "center" }}>{course.courseName}</span>{" "}
+//     </td>
+//     <td>{course.courseDescription}</td>
+//     <td></td>
+//   </tr>
+// ));

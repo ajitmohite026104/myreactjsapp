@@ -14,32 +14,35 @@ class SearchComponent extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.history.push(`/browse?filterBy=${this.state.searchText}`);
+    if (this.state.searchText)
+      this.props.history.push(`/browse?filterBy=${this.state.searchText}`);
   };
 
   render() {
     return (
-      <Form inline className="col-md-8" onSubmit={this.handleSubmit}>
-        <InputGroup className="col-md-9">
-          <InputGroup.Prepend>
+      <Form inline className="col-md-7" onSubmit={this.handleSubmit}>
+        <InputGroup className="col-md-8">
+          {/* <InputGroup.Prepend>
             <InputGroup.Text id="basic-addon1">
               <FontAwesomeIcon icon={faSearch} />
             </InputGroup.Text>
-          </InputGroup.Prepend>
+          </InputGroup.Prepend> */}
           <FormControl
-            placeholder="Search..."
+            placeholder="Search"
             aria-label="Search"
             aria-describedby="searchText"
             value={this.state.searchText}
             onChange={(event) =>
               this.setState({ searchText: event.target.value })
             }
-            className="mr-sm-2"
+            className="mr-sm-0"
           />
+          <InputGroup.Append>
+            <Button variant="secondary" type="submit">
+              <FontAwesomeIcon icon={faSearch} />
+            </Button>
+          </InputGroup.Append>
         </InputGroup>
-        <Button variant="outline-success" type="submit">
-          Search
-        </Button>
       </Form>
     );
   }
