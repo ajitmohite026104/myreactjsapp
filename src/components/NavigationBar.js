@@ -115,7 +115,7 @@ class NavigationBar extends React.Component {
             {(value) => {
               if (value.isLoggedIn) {
                 return (
-                  <Nav>
+                  <Nav className="mr-auto">
                     <NavDropdown
                       title={<FontAwesomeIcon icon={faUser} />}
                       id="basic-nav-dropdown"
@@ -143,7 +143,7 @@ class NavigationBar extends React.Component {
                 );
               } else {
                 return (
-                  <Nav className="ml-auto">
+                  <Nav className="mr-auto">
                     <Navbar.Brand>
                       <Nav.Link href="/Login">
                         {" "}

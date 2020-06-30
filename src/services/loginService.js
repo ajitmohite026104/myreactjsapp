@@ -9,7 +9,6 @@ export default class LoginService {
         password: password,
       })
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .catch((err) => console.log(err));
@@ -19,7 +18,6 @@ export default class LoginService {
     return axios
       .post(`${Server.BASE_API_URL}/user`, userData)
       .then((res) => {
-        console.log(res.data);
         if (res.data.success === true) {
           return res.data;
         }
@@ -31,7 +29,6 @@ export default class LoginService {
     return axios
       .get(`${Server.BASE_API_URL}/user/${email}`)
       .then((res) => {
-        console.log(res);
         if (res.data.success === true) {
           return res.data;
         }
