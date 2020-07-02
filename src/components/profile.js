@@ -1,20 +1,54 @@
-import React from 'react';
+import React from "react";
+import AppUtils from "../utilities/AppUtils";
 
-class Profile extends React.Component{
+class Profile extends React.Component {
+  state = {
+    userName: "Something went wrong!",
+    profilePicture:
+      "https://wholesaleduniya.com/wholeadmin/files/DesignImages/22115/63327_1.jpg",
+    email: "",
+    isAdmin: false,
+  };
 
-    state = {
-        userName: 'Ajit Mohite',
-        profilePicture: 'https://scontent.fpnq7-1.fna.fbcdn.net/v/t1.0-1/p160x160/67233708_2246708418710107_1203464374803496960_n.jpg?_nc_cat=100&_nc_sid=dbb9e7&_nc_ohc=myyGdXQkFLcAX-97yzE&_nc_ht=scontent.fpnq7-1.fna&_nc_tp=6&oh=e4f00f66b38d37b810255f5ad469e0c1&oe=5ED7D9CA',
-    };
+  async componentDidMount() {
+    let userData = JSON.parse(sessionStorage.getItem("user_info"));
 
-    render(){
-        return(
-            <div>
-                <img src={this.state.profilePicture} alt="profile" height="100" width="100" />
-                <h2>{this.state.userName}</h2>
-            </div>
-        );
-    };
-};
+    if (userData) {
+      let picExists = await AppUtils.checkImageExists(userData.imageUrl);
+      let picUrl = picExists ? userData.imageUrl : this.state.profilePicture;
+      this.setState({
+        userName: userData.name,
+        profilePicture: picUrl,
+        email: userData.email,
+        isAdmin: userData.isAdmin,
+      });
+    }
+  }
+
+  render() {
+    return (
+      <div className="">
+        <h1>&nbsp;</h1>
+        <div className="row">
+          <div className="col-2">
+            <img
+              src={this.state.profilePicture}
+              alt="profile"
+              height="150"
+              width="150"
+            />
+          </div>
+          <div className="">
+            <h1>
+              <b>{this.state.email}</b>
+            </h1>
+            <h4>Name - {this.state.userName}</h4>
+            <h4>Role - {this.state.isAdmin ? "Admin" : "General User"}</h4>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
 export default Profile;

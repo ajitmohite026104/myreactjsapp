@@ -1,0 +1,2 @@
+(this["webpackJsonpmy-app"]=this["webpackJsonpmy-app"]||[]).push([[9],{129:function(e,t,n){"use strict";n.r(t);var a=n(19),r=n(20),c=n(22),p=n(21),o=n(0),i=n.n(o),u=function(e){Object(c.a)(n,e);var t=Object(p.a)(n);function n(){return Object(a.a)(this,n),t.apply(this,arguments)}return Object(r.a)(n,[{key:"render",value:function(){return i.a.createElement("div",{style:{paddingTop:10}},i.a.createElement("h2",null,"Welcome to the world of eLearning!"))}}]),n}(i.a.Component);t.default=u}}]);
+//# sourceMappingURL=9.5d30be32.chunk.js.map
