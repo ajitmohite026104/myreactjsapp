@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import AppUtils from "../utilities/AppUtils";
 
 class Profile extends React.Component {
@@ -52,10 +51,4 @@ class Profile extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    userData: state,
-  };
-}
-
-export default connect(mapStateToProps)(Profile);
+export default Profile;

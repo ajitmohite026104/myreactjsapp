@@ -2,7 +2,7 @@ import React from "react";
 import VideoPlayer from "react-video-js-player";
 import CourseService from "../services/courseService";
 import AppUtils from "../utilities/AppUtils";
-import { Server } from "../config";
+import { Server, AppDefault } from "../config";
 
 class Video extends React.Component {
   constructor(props) {
@@ -12,8 +12,7 @@ class Video extends React.Component {
         title: "",
         desc: "",
         src: "",
-        poster:
-          "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg",
+        poster: AppDefault.imageURL,
       },
     };
   }

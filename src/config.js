@@ -9,3 +9,7 @@ export const Server = {
   BASE_URL: "http://localhost:3100",
   BASE_API_URL: "http://localhost:3100/api",
 };
+
+export const AppDefault = {
+  imageURL: "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg"
+}

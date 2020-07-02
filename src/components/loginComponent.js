@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
 import GoogleLogin from "react-google-login";
-import { connect } from "react-redux";
 import { Google } from "../config";
 import LoginService from "../services/loginService";
 import { confirmAlert } from "react-confirm-alert";
@@ -36,10 +35,10 @@ class LoginComponent extends React.Component {
     const result = await loginService.authenticateUser(userName, password);
 
     if (result && result.success === true) {
-      this.props.userData.Name = result.data.name;
-      this.props.userData.Email = result.data.email;
-      this.props.userData.Image = result.data.imageUrl;
-      this.props.userData.IsLoggedIn = true;
+      // this.props.userData.Name = result.data.name;
+      // this.props.userData.Email = result.data.email;
+      // this.props.userData.Image = result.data.imageUrl;
+      // this.props.userData.IsLoggedIn = true;
       sessionStorage.setItem("auth_cookie", result.data.token);
       sessionStorage.setItem("user_info", JSON.stringify(result.data));
       this.props.history.push("/oauth_callback");
@@ -53,10 +52,10 @@ class LoginComponent extends React.Component {
     let res = response.profileObj;
 
     if (res) {
-      this.props.userData.Name = res.name;
-      this.props.userData.Email = res.email;
-      this.props.userData.Image = res.imageUrl;
-      this.props.userData.IsLoggedIn = true;
+      // this.props.userData.Name = res.name;
+      // this.props.userData.Email = res.email;
+      // this.props.userData.Image = res.imageUrl;
+      // this.props.userData.IsLoggedIn = true;
 
       let dbResponse = await loginService.addUserLogin({
         name: res.name,
@@ -171,10 +170,4 @@ class LoginComponent extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    userData: state,
-  };
-}
-
-export default connect(mapStateToProps)(LoginComponent);
+export default LoginComponent;

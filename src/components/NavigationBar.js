@@ -1,6 +1,5 @@
 import React, { createRef } from "react";
 import { NavLink } from "react-router-dom";
-import { connect } from "react-redux";
 import SearchComponent from "./SearchComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
@@ -36,16 +35,6 @@ class NavigationBar extends React.Component {
       isLoggedIn: sessionStorage.getItem("auth_cookie") ? true : false,
       isAdmin: userData ? userData.isAdmin : false,
     });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.userData !== prevProps.userData) {
-      let userData = JSON.parse(sessionStorage.getItem("user_info"));
-      this.setState({
-        isLoggedIn: sessionStorage.getItem("auth_cookie") ? true : false,
-        isAdmin: userData ? userData.isAdmin : false,
-      });
-    }
   }
 
   logout(event) {
@@ -182,13 +171,8 @@ class NavigationBar extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    userData: state,
-  };
-}
 
-export default connect(mapStateToProps)(NavigationBar);
+export default NavigationBar;
 
 // let button;
 

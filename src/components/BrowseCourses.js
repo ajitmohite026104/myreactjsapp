@@ -2,6 +2,7 @@ import React from "react";
 import ListComponent from "./ListComponent";
 import AppUtils from "../utilities/AppUtils";
 import CourseService from "../services/courseService";
+import {AppDefault} from "../config";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -80,15 +81,16 @@ class BrowseCourses extends React.Component {
   getCourseThumbnail(imgURL) {
     return imgURL && imgURL !== ""
       ? imgURL
-      : "https://martechseries.com/wp-content/uploads/2015/09/Persistent-Systems-and-ValidSoft-Deliver-New-Secure-Digital-Voice-Authentication-Capabilities-for-Banking-and-Credit-Unions.jpg";
+      : AppDefault.imageURL;
   }
 
   render() {
+    let filteredCourses = this.filterCourses(this.state.courses);
     let heading = "No Courses Available";
-    if(this.state.courses && this.state.courses.length > 0) {
+    if(filteredCourses && filteredCourses.length > 0) {
       heading = "Courses Available";
     }
-    const cardList = this.filterCourses(this.state.courses).map((course) => {
+    const cardList = filteredCourses.map((course) => {
       return (
         <div className="col-md-4" key={course._id}>
           <div className="card course-card" height="75">

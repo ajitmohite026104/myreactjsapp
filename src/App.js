@@ -13,8 +13,6 @@ import {
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import requireAuth from "./services/authService";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
 import { UserProvider } from "./userContext";
 
 const Home = lazy(() => import("./components/Home"));
@@ -28,14 +26,14 @@ const CreateVideoForm = lazy(() => import("./components/CreateVideoForm"));
 // const GithubUsers = lazy(() => import("./components/GithubUsers"));
 // const History = lazy(() => import("./components/History"));
 
-const userData = {
-  Name: "",
-  Email: "",
-  Image: "",
-  IsLoggedIn: false,
-};
-const reducer = (state = userData, action) => state;
-const store = createStore(reducer);
+// const userData = {
+//   Name: "",
+//   Email: "",
+//   Image: "",
+//   IsLoggedIn: false,
+// };
+// const reducer = (state = userData, action) => state;
+// const store = createStore(reducer);
 
 class App extends React.Component {
   constructor(props) {
@@ -65,13 +63,10 @@ class App extends React.Component {
   }
 
   render() {
-    const { isLoggedIn } = this.state;
-
     return (
       <div className="main">
         <UserProvider value={this.state}>
-          <Provider store={store}>
-            <Router {...{ isLoggedIn }}>
+            <Router>
               <NavigationBar />
 
               <Container
@@ -118,7 +113,6 @@ class App extends React.Component {
 
               <Footer />
             </Router>
-          </Provider>
         </UserProvider>
       </div>
     );

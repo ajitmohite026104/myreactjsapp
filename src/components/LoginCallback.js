@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 
 export class LoginCallback extends React.Component {
   constructor(props) {
@@ -35,7 +34,7 @@ export class LoginCallback extends React.Component {
 
   render() {
     let authCookie = sessionStorage.getItem("auth_cookie");
-    let userData = this.props.userData;
+    let userData = JSON.parse(sessionStorage.getItem("user_info"));
 
     return (
       <div className="container">
@@ -43,10 +42,10 @@ export class LoginCallback extends React.Component {
         <h3>LoggedIn User Details: </h3>
         <br />
         <p>
-          <b>Name: </b> {userData.Name}
+          <b>Name: </b> {userData.name}
         </p>
         <p>
-          <b>Email: </b> {userData.Email}
+          <b>Email: </b> {userData.email}
         </p>
         <p>
           <b>Token: </b> {authCookie}
@@ -56,10 +55,4 @@ export class LoginCallback extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    userData: state,
-  };
-}
-
-export default connect(mapStateToProps)(LoginCallback);
+export default LoginCallback;

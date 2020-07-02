@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CourseService from "../services/courseService";
 
-export default class VideoDashboard extends Component {
+export class VideoDashboard extends Component {
   constructor(props) {
     super(props);
 
@@ -118,3 +118,5 @@ export default class VideoDashboard extends Component {
     );
   }
 }
+
+export default VideoDashboard;
