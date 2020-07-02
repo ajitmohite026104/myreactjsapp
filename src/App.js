@@ -117,19 +117,6 @@ class App extends React.Component {
               </Container>
 
               <Footer />
-              {/* <div className="container-fluid">
-            <Suspense fallback={<div>Loading...</div>}>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/about" component={About} />
-                <Route path="/login" component={LoginComponent} />
-                <Route path="/githubusers" component={GithubUsers} />
-                <Route path="/profile" component={Profile} />
-                <Route path="/browse" component={BrowseCourses} />
-                <Route path="/history" component={History} />
-              </Switch>
-            </Suspense>
-          </div> */}
             </Router>
           </Provider>
         </UserProvider>

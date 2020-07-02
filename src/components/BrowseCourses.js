@@ -84,6 +84,10 @@ class BrowseCourses extends React.Component {
   }
 
   render() {
+    let heading = "No Courses Available";
+    if(this.state.courses && this.state.courses.length > 0) {
+      heading = "Courses Available";
+    }
     const cardList = this.filterCourses(this.state.courses).map((course) => {
       return (
         <div className="col-md-4" key={course._id}>
@@ -122,7 +126,7 @@ class BrowseCourses extends React.Component {
 
     return (
       <div>
-        <h2>Courses Available</h2>
+        <h2>{heading}</h2>
         <ListComponent cardList={cardList}></ListComponent>
       </div>
     );

@@ -22,11 +22,6 @@ class SearchComponent extends React.Component {
     return (
       <Form inline className="col-md-7" onSubmit={this.handleSubmit}>
         <InputGroup className="col-md-8">
-          {/* <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1">
-              <FontAwesomeIcon icon={faSearch} />
-            </InputGroup.Text>
-          </InputGroup.Prepend> */}
           <FormControl
             placeholder="Search"
             aria-label="Search"

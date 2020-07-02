@@ -70,7 +70,6 @@ export default class VideoDashboard extends Component {
                 />
               </div>
               <div className="form-group">
-                {/* <label htmlFor="desc">Description</label> */}
                 <textarea
                   name="desc"
                   value={this.state.description}
@@ -85,7 +84,6 @@ export default class VideoDashboard extends Component {
                 </textarea>
               </div>
               <div className="form-group">
-                {/* <label htmlFor="file">Upload</label> */}
                 <input
                   type="file"
                   name="file"
@@ -95,7 +93,6 @@ export default class VideoDashboard extends Component {
                 />
               </div>
               <div className="form-group">
-                {/* <label htmlFor="thumbnail">Thumbnail</label> */}
                 <input
                   type="text"
                   name="thumbnail"

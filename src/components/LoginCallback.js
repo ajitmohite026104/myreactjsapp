@@ -37,8 +37,6 @@ export class LoginCallback extends React.Component {
     let authCookie = sessionStorage.getItem("auth_cookie");
     let userData = this.props.userData;
 
-    // Code to save these values in firebase goes here
-
     return (
       <div className="container">
         <h1>Please wait. Redirecting in {this.state.count}s ...</h1>

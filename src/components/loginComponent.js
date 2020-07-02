@@ -35,7 +35,7 @@ class LoginComponent extends React.Component {
 
     const result = await loginService.authenticateUser(userName, password);
 
-    if (result.success === true) {
+    if (result && result.success === true) {
       this.props.userData.Name = result.data.name;
       this.props.userData.Email = result.data.email;
       this.props.userData.Image = result.data.imageUrl;
@@ -79,7 +79,7 @@ class LoginComponent extends React.Component {
   handleAuthFailure(err) {
     confirmAlert({
       title: "Authentication Failed",
-      message: err.error,
+      message: err && err.error ? err.error : "",
       buttons: [
         {
           label: "Ok",
