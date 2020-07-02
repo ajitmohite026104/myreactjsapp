@@ -27,6 +27,7 @@ class Video extends React.Component {
         ? await AppUtils.checkImageExists(videoDetails.thumbnail)
         : false;
       let posterURL = posterExists ? videoDetails.thumbnail : this.state.poster;
+      console.log(posterURL);
       this.setState({
         video: {
           src: `${Server.BASE_URL}/${videoDetails.videosrc}`,
@@ -46,14 +47,13 @@ class Video extends React.Component {
           controls={true}
           src={this.state.video.src}
           poster={this.state.video.poster}
-          width="1020"
-          height="420"
           autoplay={false}
+          className="course-video"
         />
       );
     }
     return (
-      <div className="course-desc">
+      <div className="container course-desc">
         <div className="d-flex justify-content-left">
           <h2>{this.state.video.title}</h2>
         </div>

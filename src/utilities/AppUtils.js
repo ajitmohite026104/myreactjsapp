@@ -14,8 +14,9 @@ const AppUtils = {
 
   getShortText(text) {
     if (text.length > 100) return text.substring(0, 97) + "...";
+    else if (text.length === 0) return text + " " + "\xa0".repeat(150);
     else {
-      text = text + " " + "\xa0".repeat(100 - text.length);
+      text = text + " " + "\xa0".repeat(99 - text.length);
       return text;
     }
   },

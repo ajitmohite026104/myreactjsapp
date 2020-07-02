@@ -51,10 +51,10 @@ export class VideoDashboard extends Component {
   render() {
     let pic = this.state.thumbnail;
     return (
-      <div className="create-form">
-        <h1>&nbsp;</h1>
+      <div className="col-12">
+<div className="create-form">
         <div className="row">
-          <div className="col-7">
+          <div className="col-lg-6">
             <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <input
@@ -110,12 +110,14 @@ export class VideoDashboard extends Component {
               </div>
             </form>
           </div>
-          <div className="">
-            <img src={pic} width="400" height="350" alt="" />
+          <div className="img-container">
+            <img src={pic} className="img-fluid img-thumbnail" height="350" alt="" />
           </div>
         </div>
       </div>
-    );
+
+      </div>
+          );
   }
 }
 

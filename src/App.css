@@ -8,14 +8,14 @@
   padding-bottom: 3rem;
 }
 
-.something {
-  right: 0;
-  left: auto !important;
+img.identity {
+  max-width: 100%;
+  max-height: 275px;
+  height: auto;
 }
 
-img.identity {
-  max-width: 275px;
-  max-height: 275px;
+.create-form {
+  padding-top: 3.5rem;
 }
 
 .create-form input {
@@ -28,6 +28,10 @@ img.identity {
   border-radius: 1rem;
   color: darkslategray;
   height: 10rem !important;
+}
+
+.img-container {
+  padding: 1rem;
 }
 
 .course-desc {
@@ -48,6 +52,11 @@ img.identity {
   text-align: justify;
 }
 
+.course-video {
+  max-width: 90%;
+  height: 400px;
+}
+
 .footer {
   background-color: rgb(17, 17, 48);
   color: rgb(206, 75, 28);
@@ -64,4 +73,16 @@ img.identity {
 
 .footer a:hover {
   color: rgb(206, 75, 28);
+}
+
+@media only screen and (min-width: 1000px) {
+  .img-container {
+    max-width: 420px;
+  }
+}
+
+@media only screen and (max-width: 766px) {
+  .card {
+    padding: 1.5rem;
+  }
 }

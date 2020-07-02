@@ -96,11 +96,14 @@ class LoginComponent extends React.Component {
         {(value) => {
           return (
             <div className="d-flex justify-content-center">
-              <img
-                src="https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg"
-                alt=""
-                className="identity"
-              />
+              <div>
+                <img
+                  src="https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg"
+                  alt=""
+                  className="img-fluid identity"
+                />
+              </div>
+              
               <Form
                 style={{ paddingTop: 20 }}
                 className="col-md-4"

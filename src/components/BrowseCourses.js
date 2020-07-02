@@ -100,27 +100,30 @@ class BrowseCourses extends React.Component {
               height="200"
               alt="..."
             />
-            <div className="card-body">
+            <div className="card-body" height="75">
               <h5 className="card-title">{course.title}</h5>
-              <p className="card-text">
+              <p className="card-text" height="75">
                 {AppUtils.getShortText(course.description)}
               </p>
-              <button
-                onClick={() => this.props.history.push("/video/" + course._id)}
-                className="btn btn-outline-secondary"
-              >
-                Visit Course
-              </button>
-              &nbsp;
-              {this.state.isAdmin && (
+              <div className="">
                 <button
-                  onClick={() => this.confirmDeleteCourse(course)}
-                  className="btn btn-outline-danger"
-                >
-                  Remove
-                </button>
-              )}
-            </div>
+                    onClick={() => this.props.history.push("/video/" + course._id)}
+                    className="btn btn-outline-secondary"
+                    style={{margin: "0.3rem"}}
+                  >
+                    Visit Course
+                  </button>
+                  {this.state.isAdmin && (
+                    <button
+                      onClick={() => this.confirmDeleteCourse(course)}
+                      className="btn btn-outline-danger"
+                      style={{margin: "0.3rem"}}
+                    >
+                      Remove
+                    </button>
+                  )}
+              </div>
+            </div>            
           </div>
         </div>
       );
